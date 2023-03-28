@@ -1,0 +1,106 @@
+curl - brings a webpage through the terminal.
+      EX: curl cht.sh or curl cht.sh/command
+        -   cht.sh website made for BASH that will grab a detailed manual page and examples.
+  
+man - an interface to the on-line reference manuals.
+  -- does not always bring up examples.
+  '-f' - in a man page brings up the flags/options.
+  /pattern - search forward for (N-th) matching line
+  ?pattern - search backward for (N-th) matching line
+  &pattern - display only matching lines
+  n or shift+n - moves between search results
+  q - quit man
+  
+  echo "something something in the neghborhood" > strange.txt
+    - this will cat "text" to a file
+    - if file does not exist, BASH will create it
+    - this will append to the file, not overwrite
+  
+  -----order of operations-----
+  Redirection
+  alias
+    EX: ls = 'ls --color=auto'
+  parameter expansion, command substitution, arithmetic expansion, and quote removal.
+  shell function
+  built-in commands
+  hash tables
+  path variable
+  error
+  
+  touch file{1..5}.txt 
+  creates files file1.txt though file5.txt
+  
+  ~/ or $HOME - the home directory (~ IS $HOME)
+  etc/passwd - absolute path
+  ./ or .. - relative paths
+  
+  -----file system commands-----
+  touch --- touch -t
+    change timestamps
+  mkdir ---
+  rm --- rm -rf
+    rmdir, basically
+  rmdir --- rmdir -p
+    removes directory and ancestors
+  ls --- ls -lisa
+    shows permission list, file size, and timestamps
+  cd --- cd -
+  
+  
+  -----Processes and Memory-----
+  ps - process snapshot
+  
+  -terminating processes-
+  kill
+  kill -9 1234
+  killall
+  killall firefox
+  
+  -----cat, more || less-----
+  cat - prints out the contents fully (gotta scroll up)
+  more - lets you space+tab through until the end (b goes back)
+  less - gives a brief synopsis of a file
+  q - quit
+  
+  -----head and tail-----
+  head - print first 10 lines of a file
+  tail - print last 10 lines of a file
+  
+  -----finding files and dirs------
+  find - search for files, by defalt only looks in current directory
+    EX: find *.txt - will return (case sensitive, use -iname for nocase) all .txt items in the currents directory
+    -type
+    -mtime 2 (2 being days) - look for files made in last () days.
+    -empty - empty files
+    -executable - finds executable files
+    -exec - will execute following commands on found file
+    -printf - prints the ouput to the screen
+      -EX: find -empty -printf "%i\n"
+        -%1 will specifiy the number that the file is in memory(\n is newline of course)
+  whereis/locate - returns location of file with name
+  which - look through past directories
+  
+-----good ol' grep-----
+search for patterns in a file, print the line (only the line) with that pattern.
+grep supports files, no need to cat the file.
+EX: grep --help | grep grep
+  - print the help page for grep, then redirects that to a grep cmd that greps the lines with 'grep' in them
+  -- -i = nocase
+  -- in prints with lines numbers
+  -- C5 prints five lines bofa directions
+  -- A5 prints five after
+  -- B5 prints 5 before
+  -- egrep - search for patterns using regex
+  ----EX: egrep "student|root|steve" /etc/passw
+  -- ^[ - beginning of a line
+  
+  ---cut---
+  cut - remove sections from each line of files
+  -d - delimiter (this is what separates the fields)
+  -f - fields
+  -c - characters
+  -s - only delimited (only prints the lines that contain the delimiter character)
+  --output-delimiter = changes your delimiter
+  EX: cut -d: -f1,6 - delimits line by ':' and prints fields 1 through 6.
+  
+   
