@@ -44,7 +44,7 @@ man - an interface to the on-line reference manuals.
     removes directory and ancestors
   ls --- ls -lisa
     shows permission list, file size, and timestamps
-  cd --- cd -
+  cd --- cd - moving around files
   
   
   -----Processes and Memory-----
@@ -69,14 +69,27 @@ man - an interface to the on-line reference manuals.
   -----finding files and dirs------
   find - search for files, by defalt only looks in current directory
     EX: find *.txt - will return (case sensitive, use -iname for nocase) all .txt items in the currents directory
+    -name - case sensitive search boundary
+    -iname - name, but case insensitive
+    -find /  - will begin the search in  root
     -type
     -mtime 2 (2 being days) - look for files made in last () days.
     -empty - empty files
     -executable - finds executable files
     -exec - will execute following commands on found file
+      - must end a -exec line with \;
+      - file(s) are referenced after -exec with {}
+            EX: find $HOME/1123/*[^~].txt -exec cp {} $HOME/CUT \;
     -printf - prints the ouput to the screen
-      -EX: find -empty -printf "%i\n"
+    -inum - finds files with the specified inode number
+            EX: find / -inum ##### -printf "%f\n" - prints only the filename of inode ####
+                  - / is root, searching everything.
+      -EX: find -empty -printf "%i %f\n" - prints empty filenames and their inode followed by a newline
         -%1 will specifiy the number that the file is in memory(\n is newline of course)
+        -%f will print only the specified filename
+finding files W/out a character 
+EX: find $HOME/1123/*[^~].txt
+        
   whereis/locate - returns location of file with name
   which - look through past directories
   
@@ -91,6 +104,7 @@ EX: grep --help | grep grep
   -- A5 prints five after
   -- B5 prints 5 before
   -- egrep - search for patterns using regex
+      -v inverse, or reverse the results. grep all that is NOT in the specified field
   ----EX: egrep "student|root|steve" /etc/passw
   -- ^[ - beginning of a line
   
@@ -103,4 +117,26 @@ EX: grep --help | grep grep
   --output-delimiter = changes your delimiter
   EX: cut -d: -f1,6 - delimits line by ':' and prints fields 1 through 6.
   
-   
+  Big Example of using cut to get specific files
+  ls -l $HOME/CUT | cut -d' ' -f9 | cut -d"." -s -f1-2 > $HOME/CUT/names
+       
+----brace expansion----
+- say you need to make multiple directories/files
+      mkdir OR touch $HOME/11{23,34,45,56}
+- this will create dirs/files 1123,1134,1145,and 1156 in the $HOME Directory
+
+- a shortcut for making many files with numbers
+touch $HOME/1123/file{1..5}.txt $HOME/1123/{6..9}~.txt
+      SHORTHAND - touch $HOME/1123/{{1..5},{6..9}~}.txt
+- this will create 9 files in the directory
+1.txt
+2.txt
+3.txt
+4.txt
+5.txt
+6~.txt
+7~.txt
+8~.txt
+9~.txt
+
+2>/dev/null - send error meessages to the trash bin
