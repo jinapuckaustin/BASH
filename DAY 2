@@ -29,10 +29,12 @@ sort -n
 ~ sorts content numerically
 sort -u 
 ~ sort content uniquely
+      ~ does the same thing as sort | uniq -u
 sort -nr 
 ~ sort content numerically reversed
-sort -t"+"
-~ specify field separator '+'
+sort -t"+" -k2nr sorty.txt
+~ specify field delimiter '+', of course ' ' is the default 
+      ~ -k# for column#
 
 -----uniq------ "report or omit repeated lines"
 uniq
@@ -81,6 +83,11 @@ EX: egrep "root" /etc/passwd | awk -F: '{print $1}'
 
 EX: awk -F: '/games/,/news/{print $1}' /etc/passwd
 ~ get $1 (1st field) from all lines containing and between games and news
+
+EX:head /etc/passwd | cat -n | awk 'NR==10{print}'
+~ cat -n prints with line numbers
+      ~ NR==10 will print the 10th line from the previous command
+
 -----sed----- "stream editor for filtering and transforming text"
 sed 's/abc/123/'
 ~ replace first occurence of abc in every line with 123
@@ -91,3 +98,24 @@ sed '/sus/d'
 sed -i '<expression>' file.txt
 ~ "sed inplace" to make changes permanent in file.txt
   ~ not needed for writing the output to another file
+      ~ sed -i must be the first command in the line to work correctly
+            EX: sed -i '/student/instructer/g' passwd.back
+                  ~ chagnes all "student" to instructor in the specified file
+~ you can chain expressions in the same sed cmd with ;
+      EX: sed <expression>;<expression>
+
+# replaceing words with fwdslashes
+EX: sed 's/\/bin\/bash/\/bin\/bin\/better/\/'
+      ~escaping
+altEX:sed 's+/bin/bash+/bin/better'
+      ~only substitution operation for sed
+            ~can use any character
+
+# deletion
+EX: sed 's/FIND/REPLACE/g;/patter/d;' ???
+
+#printing numbered lines with sed
+head /etc/passwd | cat -n | sed -n 10p
+
+#print lines containing and between lines containing specific words
+head /etc/passwd | cat -n | sed -n '/root/,/sys/p'
