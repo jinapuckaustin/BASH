@@ -57,6 +57,8 @@ awk '{print $2}'
 ~ displays 2nd field; delimited automaticaly by a white space ' '
 awk -F '($3 == 0) {print $1}' /etc/passwd
 
+$NF ~ the lsat field in the line
+
 EX: egrep "/bin/false|/bin/bash" /etc/passwd | awk -F: '(($NF!="/bin/false")){print}' 
 ~ print all of the lines in /etc/passwd which the last field does not == /bin/false
 
@@ -88,6 +90,10 @@ EX:head /etc/passwd | cat -n | awk 'NR==10{print}'
 ~ cat -n prints with line numbers
       ~ NR==10 will print the 10th line from the previous command
 
+# When using awk with MULTIPLE CONDITIONS
+separate the conditions insode parenthesis and use the && comparitor between them
+      EX: awk -F: '($3>3) && ($NF=="/bin/bash") {print$1}' /etc/passwd > $HOME/SED/names.txt
+
 -----sed----- "stream editor for filtering and transforming text"
 sed 's/abc/123/'
 ~ replace first occurence of abc in every line with 123
@@ -115,7 +121,47 @@ altEX:sed 's+/bin/bash+/bin/better'
 EX: sed 's/FIND/REPLACE/g;/patter/d;' ???
 
 #printing numbered lines with sed
-head /etc/passwd | cat -n | sed -n 10p
+EX: head /etc/passwd | cat -n | sed -n 10p
 
 #print lines containing and between lines containing specific words
-head /etc/passwd | cat -n | sed -n '/root/,/sys/p'
+EX: head /etc/passwd | cat -n | sed -n '/root/,/sys/p'
+
+~~~~~conditionals~~~~~
+-e ~ file exists?
+-f ~ file exists and is a regular file?
+-d ~ file exists and is a directory
+== ~ strings, is equal to strings
+-eq ~ numbers, is equa; to
+!= ~ strings, is NOT equal to
+
+~~~~~if statements~~~~~
+# big one #
+~ if its letters use
+symbols (== or != > >= < <=)
+      EX:if [[ sith == Jedi ]]; then
+~ if its numbers use
+letters (-eq or -ne -gt -lt -ge -le)
+      EX:if [[ 2 -eq 2 ]]; then
+
+EX:
+if [[ condition ]]; then
+      commands
+elif [[ condition ]]; then
+      commands
+else
+      commands
+fi
+
+~~~~~~command substitution~~~~~
+Basic Syntax Example:
+synEX: VAR=$(command) or VAR=$(command|command|command..)
+synEX: command $(command)
+synEX: VAR=`command` ~Legacy way using backticks (`)
+
+EX: proc=$(ps -elf) ~ assign the output of ps -elf to the variable $proc
+EX: echo "Today is $(date)" Substitute output of date command into echo
+
+demEX:
+
+~~~~~BONUS NOTES~~~~~
+wc -l ~ gives the number of lines in a file OR files in a directory
