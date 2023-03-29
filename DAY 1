@@ -103,6 +103,9 @@ EX: grep --help | grep grep
   -- C5 prints five lines bofa directions
   -- A5 prints five after
   -- B5 prints 5 before
+  -- -o ~ omit everything not specified by the regex (use egrep 'regex shit' file.txt)
+      ~ sort by how many times it appear
+            EX: sort | uniq -c | sort -nr
   -- egrep - search for patterns using regex
       -v inverse, or reverse the results. grep all that is NOT in the specified field
   ----EX: egrep "student|root|steve" /etc/passw
