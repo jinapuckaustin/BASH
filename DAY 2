@@ -1,20 +1,17 @@
-```diff
-+ this text is highlighted in green
-- this text is highlighted in red
 ~~~~~alias~~~~~ "shorter sweeter command fu"
--alias
-+~ view all aliases
--alias vim='nano
-+~ creates alias vim for nano
--unalias vim
-+~ unlaliases vim to no longer resolve to nano
--alias egrep='egrep --color='auto
-+~ best use of aliases to include common options of cmds
--\egrep
-+~ negate the alias to run egrep without --colo-auto option
--Rules/limits
-+~ aliases are NOT persistent by default
-+~ alias names CANNOT use \$ "" = or any of the shell metacharacters or qouting characters
+alias
+~ view all aliases
+alias vim='nano
+~ creates alias vim for nano
+unalias vim
+~ unlaliases vim to no longer resolve to nano
+alias egrep='egrep --color='auto
+~ best use of aliases to include common options of cmds
+\egrep
+~ negate the alias to run egrep without --colo-auto option
+Rules/limits
+~ aliases are NOT persistent by default
+~ alias names CANNOT use \$ "" = or any of the shell metacharacters or qouting characters
 
 ~ making an alias permanent
 nano ~/.bashrc
@@ -94,5 +91,3 @@ sed '/sus/d'
 sed -i '<expression>' file.txt
 ~ "sed inplace" to make changes permanent in file.txt
   ~ not needed for writing the output to another file
-  
-```
