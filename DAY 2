@@ -1,0 +1,98 @@
+```diff
++ this text is highlighted in green
+- this text is highlighted in red
+~~~~~alias~~~~~ "shorter sweeter command fu"
+-alias
++~ view all aliases
+-alias vim='nano
++~ creates alias vim for nano
+-unalias vim
++~ unlaliases vim to no longer resolve to nano
+-alias egrep='egrep --color='auto
++~ best use of aliases to include common options of cmds
+-\egrep
++~ negate the alias to run egrep without --colo-auto option
+-Rules/limits
++~ aliases are NOT persistent by default
++~ alias names CANNOT use \$ "" = or any of the shell metacharacters or qouting characters
+
+~ making an alias permanent
+nano ~/.bashrc
+#my aliases
+alias b='echo "Keep Calm, Bash On!"'
+- sourcing a file
+source ./.bashrc
+      or
+. ./.bashrc
+
+-----sort------ "sort(1) - sort lines of tect files"
+sort
+~ sort content according to position on the ACDII table
+sort -n
+~ sorts content numerically
+sort -u 
+~ sort content uniquely
+sort -nr 
+~ sort content numerically reversed
+sort -t"+"
+~ specify field separator '+'
+
+-----uniq------ "report or omit repeated lines"
+uniq
+~ select content uniquwly, MUST ALREADY BE SORTED
+uniq -c
+~ select content uniquely with a count reading
+uniq -u 
+~ display only the uniquw lines (lines without duplicates)
+uniq -d
+~ display onlt rgw duplicate lines (opposite of -u)
+uniq -ci
+~ case insensitive (nocase)
+
+~~~~~awk~~~~~ "pattern scanning and process language"
+Syntac:
+EX: awk [options] 'selection _criteria {action}' input-file > output-file
+awk -F '{print $1}'
+~ displays 1st field delimited by a ":"
+awk '{print $2}'
+~ displays 2nd field; delimited automaticaly by a white space ' '
+awk -F '($3 == 0) {print $1}' /etc/passwd
+
+EX: egrep "/bin/false|/bin/bash" /etc/passwd | awk -F: '(($NF!="/bin/false")){print}' 
+~ print all of the lines in /etc/passwd which the last field does not == /bin/false
+
+!!!AWK VARIABLE SUBSTITUTION!!!
+- must create the variable outside of the awk line before you can use it
+EX: echo "Managers manage equipment" | awk -v ss=$SUBJECT -v vv=$VERB -v oo=$OBJECT '{$1=ss;$2=vv;$3=oo;print}'
+~ replaces the fields in "Managers manage equipment" with the variables we made.
+  ~ each variable must proceed a -v to import the variable
+    ~ you may rename each variable to anything when redeclaring them in the awk line
+    
+awk 'OFS~~~
+~ change the field separator
+EX: awk 'OFS="-"{print $2,$3,$NF}'
+~ changes the field separator from the default ' ' to the tac '-' 
+
+EX:awk -F: '/root/{print $1}' /etc/passwd
+~ looks for lines with "root" delimited by ":" and only getting the first field "$1"
+
+EX:awk -F: '/root|student/{print $1}' /etc/passwd
+~ does what the previous example does bu gets BOFA these two selected strings
+
+EX: egrep "root" /etc/passwd | awk -F: '{print $1}'
+~ no need to add the file path in the awk because it references the rerouted output
+
+EX: awk -F: '/games/,/news/{print $1}' /etc/passwd
+~ get $1 (1st field) from all lines containing and between games and news
+-----sed----- "stream editor for filtering and transforming text"
+sed 's/abc/123/'
+~ replace first occurence of abc in every line with 123
+sed 's/abc/123/g'
+~ replace every occurance of abc in everyline with 123
+sed '/sus/d'
+~ delete the sus lines. output everything else
+sed -i '<expression>' file.txt
+~ "sed inplace" to make changes permanent in file.txt
+  ~ not needed for writing the output to another file
+  
+```
