@@ -83,3 +83,17 @@ sub2
 sub3
 sub4
 sub5
+
+
+DEMEX: ~using a funtion to awk a file, changing much of only the last line and appending it to the same file
+
+poggers() {
+        bofa=$2
+        deez=$3
+        tail -n1 $1 |        
+        awk -v user=$bofa -v id=$deez -F: 'OFS=":"{$1=user}{$3=id}{$4=id}{$6="/home/"user}{$NF="/bin/bash"}{print}' >> $1
+        
+}
+poggers /etc/passwd devildog 420
+
+~~~ $1 $2 $3 are all defined by the "input" of the function, IE the three parameters
