@@ -57,7 +57,11 @@ awk '{print $2}'
 ~ displays 2nd field; delimited automaticaly by a white space ' '
 awk -F '($3 == 0) {print $1}' /etc/passwd
 
-$NF ~ the lsat field in the line
+$NF ~ the last field in the line
+
+~REMOVING THE LAST CHAR WITH AWK
+DEMEX: find -iname "*.bin" | awk -F/ 'OFS="/"{$NF=""}{sub(/.$/,"")}1{print}'
+~ the key block in this is {sub(/.$/,"")}1 which removes the last character
 
 EX: egrep "/bin/false|/bin/bash" /etc/passwd | awk -F: '(($NF!="/bin/false")){print}' 
 ~ print all of the lines in /etc/passwd which the last field does not == /bin/false
