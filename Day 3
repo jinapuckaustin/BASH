@@ -1,0 +1,85 @@
+~~~~~parameter values~~~~~
+~name (variable)
+number (positional parameter)
+special character (special parameter)
+
+BASH Parameters 
+(Variables)
+~variables are set with a name (identifier) on the left of an equal sign and value for nothing$%%$%$%$
+
+$# ~ number of arguments passed
+$0 ~ name of the script
+$2 ~ the 2nd argument passed
+$* ~ all arguments passed
+$? ~ status of the last executed command
+$_ ~ last argument provided in the previous command
+$$ ~ PID of current shell
+$- ~ Flags are set in the shell
+
+~~~~~functions~~~~~
+can contain variables, loops, accept parameters, and return a value
+synEX:
+  function first() {
+  code n shit
+  }
+  OR
+  second() {
+  more code n shit
+  }
+  
+demoEX:
+  function getuserchoice() {
+  > echo "make a choice [1,2,3]:"
+   read userchoice
+   case $userchoice in
+   (1) echo 1 ;;
+   (2) echo two ;; 
+   (3) echo three ;;
+   (*) echo other ;;
+   esac
+   }
+   
+demoEX: ~ make a folder, if it exists, return error
+   folder() {
+      if [ ! -s $1 ]; then
+          mkdir $1
+      else
+          echo "STAHP"
+          #error lol
+          return 1
+      fi }
+  folder $1
+  
+  ~ will create a dir with the name of the first argument passed
+  EX: ./script/sh Who am I
+  ~ this will output a dir with the name of Who
+  
+  ~~~~~variable substitution~~~~~
+  ~ replacing a variable with its value
+  DemoEX:
+    sub1() {
+      name="john"
+      echo $name ~ echoed the value of $name
+    }
+    sub2 () {
+      name="john"
+      echo "my name is $name" ~ echoed the string and the value within
+    }
+    sub3 () {
+      name="john"
+      echo 'my name is $name' ~ single quotes make the output literal, no insertion of john
+    }
+    sub4 () {
+      name="john"
+      echo 'my name is "$name"n5' ~ useful with single quotes
+      echo "myname is ${name}n5" ~ tacked on n5 to the end of john
+    }
+    sub5 () {
+      name="john"
+      echo ${name:0:2}
+    }
+sub1
+sub2
+sub3
+sub4
+sub5
