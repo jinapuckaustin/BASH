@@ -97,3 +97,28 @@ poggers() {
 poggers /etc/passwd devildog 420
 
 ~~~ $1 $2 $3 are all defined by the "input" of the function, IE the three parameters
+
+~~~ finding executable files in multiple directories ~ grabbing the 10th result ~ getting the md5sum ~ cutting the fat
+DEMEX: find /bin /sbin /usr/bin /usr/sbin -executable -type f | sort | head -10 | md5sum $(tail -1)
+
+~~~sorting by number in column ~~~ sed the nth line ~~~
+DEMEX: sort -t: -k4 -n /etc/passwd | sed '10q;d' |awk -F: 'OFS=":"{$6}{print$6}' | md5sum | cut -d' ' -f1
+  synEX: sort -t (delimit) -k4 (4th column) -n (numerically)
+  
+  -printf '%h\n' ~only the directories or all but the last element  and newline
+  - sort | uniq | sort ~ sort no repeats (sort -u)
+
+
+~~~~~~~~~~~~~~~~~BIG HARD
+  #!/bin/bash
+        
+DIRS='/bin /etc /var'
+
+#find the files and hash them and send to err to one file and send stdout to another
+find $DIRS -maxdepth 3 ! -type p -exec md5sum {} 1>output.del 2>errors.del \;
+
+GoodCount=$(cat output.del | wc -l)
+BadCount=$(egrep "Is a" errors.del | wc -l)
+echo ""
+echo ""
+rm *.del
