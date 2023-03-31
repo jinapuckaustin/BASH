@@ -1,0 +1,164 @@
+~~~~~the standard for loop~~~~~
+the for loop iterates over a list of items and performs the given set of commands. the bash for loop takes the following form:
+
+Pseudo-code:
+for item in LIST
+
+do 
+
+commands
+
+done
+
+DEMEX: 
+#!/bin/bash
+
+for i in {1..10}
+do
+  echo $i
+done
+
+~~~Break and continue~~~
+~ Break ~ terminates the current loop and passes program control to the statement that follows the terminated statement.
+synEX: if [[  <condition>  ]]; then
+  break
+~ continue ~ statement exits the current iteration of a loop and passes program control to the next iteration of the loop.
+
+~~~while and until loop~~~
+while loop ~ performs a given set of commands an unknown number of times as long as the given condition evaluates to true
+
+SYNEX:
+#!/bin/bash
+counter=1
+while [[ $counter -le 10 ]]
+do
+  echo $counter
+  ((counter++))
+done
+echo "All done!"
+
+until loop ~ execute a given set of commands as long as the given condtion evaluates to false
+
+SYNEX:
+#!/bin/bash
+counter=1
+until [[ $counter -gt 10 ]]
+do
+  echo $counter
+  ((counter++))
+done
+echo "All done!"
+
+DEMEX:~~ loop.sh ~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TODAYS FUNTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+#!/bin/bash
+
+
+#~~~~Declare Functions
+#~~~for loops
+# List of names
+names() {
+	for NAME in Jackman MaClean Rhodes
+	do
+		echo $NAME
+	done
+}
+
+#Another loop iterating through a variable of items
+names2 () {
+	names='walker vacca rudnick'
+	for NAME in $names
+	do
+		echo $NAME
+	done
+}
+
+#another loop iterating through a command substitution list file
+#use command substitution to acccess the contents of a file
+FILE=$1
+get_users() { 
+	for uSER in $(awk -F: '{print $1}' /etc/passwd)
+	do
+		echo $uSER
+
+	done
+}
+
+#Basic range loop
+range() {
+	for number in {1..5}
+	do
+		echo $number
+	done
+}
+
+# range loop that counts down
+team_rocket () {
+	for COUNT in {10..1}
+	do echo $COUNT
+		sleep 1
+	done
+	echo "Team Rocket Blasts Off Again!!"
+
+
+}
+
+#for loop with counter
+countloop() {
+	for ((x=0;x<=5;x11))
+	do
+		echo "\$x is equal to $x"
+	done
+
+}
+
+#for loop w/counter w/variables
+countloop2() {
+	start=1
+	end=5
+	for ((i=start;i<=end;i++))
+	do
+		echo $i
+	done 
+}
+
+#while and until loops
+#whlie loop
+cents_or_dollars() {
+	count=1
+	while [[ $count -le 99 ]]
+	do
+		echo "current cent counter: $count GySgt Gerwing: makes sense right?"
+		((count++))
+	done
+	echo "current cent counter: $count Class: No Gunny, it makes a dollar!"
+
+}
+
+#until loop
+autobots() {
+	count=10
+	until [[ $count -eq 0 ]]
+	do
+		echo $count
+		((count--))
+	done
+	echo "$count"
+	echo "OPTIMUM PRIDE"
+
+}
+
+#~~~~Run the Functions
+#names
+#names2
+#get_users
+#range
+#team_rocket
+#countloop
+#countloop2
+#cents_or_dollars
+autobots
+
