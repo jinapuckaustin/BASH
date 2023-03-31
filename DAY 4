@@ -162,3 +162,157 @@ autobots() {
 #cents_or_dollars
 autobots
 
+
+~~~~~~~~ copy tip ~~~~~~~~
+You can copy the content of a folder /source to another existing folder /dest with the command
+
+
+The -a option is an improved recursive option, that preserve all file attributes, and also preserve symlinks.
+
+The . at end of the source path is a spec
+ic cp syntax that allow to copy all files and folders, included hidden ones.
+
+~~~~~~~MY~CHALLENGES~~~~~~~~~~~~~
+findssh() {
+        if [ find $HOME -type d -name ".ssh" ]; then
+                mkdir $HOME/SSH
+                cp -a $HOME/.ssh/. $HOME/SSH/
+        else    
+                echo "Run ssh-keygen"
+        fi }            
+        
+#findssh ~ this one didnt work?
+
+
+worky() {
+if [[ -d $HOME/.ssh ]]; then
+        mkdir $HOME/SSH
+        cp -a $HOME/.ssh/. $HOME/SSH/
+else    
+        echo "Run ssh-keygen"
+fi }
+
+worky ~ this one worky
+
+check if a dir exists, copy the contents of that dir to another newly created dir. if not found, produce error message.
+
+~ finding the default gateway ip
+get routing info, grep gateway ip line (UG), awk the 2nd ip in the line
+DEMEX: route -n | grep 'UG[ \t]' | awk '{print $2}'
+
+
+~~~~~zipping (junking) and tarring~~~~~~
+mkdir $HOME/ZIP ~ make a directory
+echo "12345" | md5sum | cut -d' ' -f1 > $HOME/ZIP/file1 ~
+echo "6789" | md5sum | cut -d' ' -f1  > $HOME/ZIP/file2    > write the md5sum of strings to files and strip the tail (  -)
+echo "abcdef" | md5sum | cut -d' ' -f1 > $HOME/ZIP/file3 ~
+cd ZIP ~ change to local directory
+zip -r -j file.zip * ~ junk all files in the directory, to a .zip file in the same directory
+tar czf file.tar.gz file.zip ~ tar with gzip option to archive the .zip into a .tar.gz
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Activity:
+
+Write a bash script that will find all the files in the /etc directory, and obtains the octal permission of those files. The stat command will be useful for this task.
+Depending how you go about your script, you may find writing to the local directory useful. What you must seperate out from the initial results are the octal permissions of 0-640 and those equal to and greater than 642, ie 0-640 goes to low.txt, while 642 is sent to high.txt.
+Have your script uniquely sort the contents of the two files by count, numerically-reversed, and output the results, with applicable titles, to the screen. An example of the desired output is shown below.
+NOTE: There is a blank line being printed between the two sections of the output below.
+EXAMPLE OUTPUT:
+
+Files w/ OCTAL Perm Values 642+:
+    424 777
+    365 644
+     15 755
+  
+Files w/ OCTAL Perm Values 0-640:
+      4 640
+      3 440
+      2 600
+      1 444
+~~~~~~~~~~      ~~~~~~~       ~~~~~~~~~~      ~~~~~~~~~         ~~~~~~~~~       ~~~~~~~~~     ~~~~~~~~~ 
+
+find /etc -type f -printf '%m\n' 2>/dev/null > perms.del
+
+for PERM in $(cat perms.del);
+do
+    if [[ $PERM -le 640 ]]; then
+        echo $PERM >> low.del  
+    elif [[ $PERM -ge 642 ]]; then
+        echo $PERM >> high.del
+fi
+done
+
+echo "Files w/ OCTAL Perm Values 642+:"
+cat high.del | sort | uniq -c | sort -nr
+echo
+echo "Files w/ OCTAL Perm Values 0-640:"
+cat low.del | sort | uniq -c | sort -nr
+
+
+~~~~~~~             ~~~~~~~~~~~~~         ~~~~~~~~~~~~         ~~~~~~~~~~~~~          ~~~~~~~~~~      ~~~~~~
+Activity:
+
+Utilize Bash looping to iteratively create each user account and their directories.
+
+Design a basic FOR Loop that iteratively alters the file system and user entries in a passwd-like file for new users: LARRY, CURLY, and MOE.
+Each user should have an entry in the $HOME/passwd file
+The userid and groupid will be the same and can be found as the sole contents of a file with the user's name in the $HOME directory (i.e. $HOME/LARRY.txt might contain 123)
+The home directory will be a directory with the user's name located under the $HOME directory (i.e. $HOME/LARRY)
+NOTE: Do NOT use shell expansion when specifying this in the $HOME/passwd file.
+The default shell will be /bin/bash
+The other fields in the new entries should match root's entry
+Users should be created in the order specified
+
+
+DEMEX:
+ROOTLINE=$(egrep "root" $HOME/passwd)
+for x in LARRY CURLY MOE; do
+    ID=$(cat $HOME/$x.txt)
+    mkdir $HOME/$x
+    echo "$ROOTLINE" | awk -F: -v uu=$x -v ii=$ID '{OFS=":"}{$1=uu;$3=$4=ii;$6="$HOME/"uu;$NF="/bin/bash";print}' >> $HOME/passwd
+done
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Activity:
+
+Write a script that determines your default gateway ip address. Assign that address to a variable using command substitution.
+NOTE: Networking on the CTFd is limited for security reasons. ip route and route are emulated. Use either of those with no arguments/switches.
+Have your script determine the absolute path of the ping application. Assign the absolute path to a variable using command substitution. HINT: man which
+Have your script send six ping packets to your default gateway, utilizing the path discovered in the previous step, and assign the response to a variable using command substitution.
+Evaluate the response as being either successful or failure, and print an appropriate message to the screen.
+Pseudo Example:
+
+A=$(command_1)
+B=$(command_2)
+C=$($A command_3 $B)
+if [[ "$" <condition> "$" ]]; then
+   echo "successful";
+else
+   echo "failure";
+fi 
+~~~~~~~~~~~~~~~~~SHOULD HAVE WORKED~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+DEFIP=$(route | grep 'UG[ \t]' | awk '{print $2}')
+PINGPATH=$(which ping)
+PINGRES=$($PINGPATH -c 6 $DEFIP &>/dev/null ; echo $? | tail -1)
+if [[ $PINGRES -eq 0 ]]; then
+    echo "successful";
+else
+    echo "failure";
+fi
+
+
+
+~~~~~~~~~~~~~DID WORK~~~~~~~~~~~~~
+GW=$(ip route) | awk '/default/{print $3}')
+CMD=$(which ping)
+TEST='%0'
+RESPONSE=$($CMD -c6 $GW |awk '/loss/{print $6}')
+if [[ "$RESPONSE" == "$TEST" ]];then
+    echo "successful"
+else
+    echo "failure"
+fi
