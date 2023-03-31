@@ -122,3 +122,10 @@ BadCount=$(egrep "Is a" errors.del | wc -l)
 echo ""
 echo ""
 rm *.del
+
+~~~Declaring a varilable
+var=5
+
+var=ying
+echo "${var}yang"
+>> yingyang
